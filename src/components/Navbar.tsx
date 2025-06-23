@@ -16,7 +16,7 @@ const Navbar = () => {
     <div className="fixed top-0 left-0 right-0 z-50 pt-4 px-4">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         {/* Logo */}
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center space-x-2 flex-shrink-0">
           <div className="w-8 h-8 bg-gradient-to-r from-purple-600 to-pink-500 rounded-lg flex items-center justify-center">
             <span className="text-white font-bold text-sm">A</span>
           </div>
@@ -26,10 +26,12 @@ const Navbar = () => {
         </div>
 
         {/* Center Navigation */}
-        <NavBar items={navItems} className="relative" />
+        <div className="flex-1 flex justify-center">
+          <NavBar items={navItems} />
+        </div>
 
         {/* Right side - Theme toggle and Auth buttons */}
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center space-x-2 flex-shrink-0">
           <ThemeToggle />
           <Button variant="ghost" size="sm" className="hidden sm:flex">
             <LogIn className="w-4 h-4 mr-2" />
