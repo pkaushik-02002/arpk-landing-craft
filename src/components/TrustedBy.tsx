@@ -37,10 +37,10 @@ const TrustedBy = () => {
   const duplicatedBrands = [...brands, ...brands];
 
   return (
-    <section className="py-16 bg-gray-50 dark:bg-gray-900 overflow-hidden">
+    <section className="py-16 bg-background overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-          <h2 className="text-sm font-semibold text-gray-500 dark:text-gray-400 tracking-wide uppercase mb-4">
+          <h2 className="text-sm font-semibold text-muted-foreground tracking-wide uppercase mb-4">
             Trusted by Leading Companies
           </h2>
         </div>
@@ -53,11 +53,11 @@ const TrustedBy = () => {
                 key={`${brand.name}-${index}`}
                 className="flex-shrink-0 group cursor-pointer"
               >
-                <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm hover:shadow-md transition-all duration-300 group-hover:scale-105 min-w-[200px] h-24 flex items-center justify-center">
+                <div className="rounded-lg p-6 hover:bg-accent transition-all duration-300 group-hover:scale-105 min-w-[200px] h-24 flex items-center justify-center">
                   <img
                     src={brand.logo}
                     alt={brand.alt}
-                    className="max-h-12 max-w-full object-contain opacity-70 group-hover:opacity-100 transition-opacity duration-300 filter dark:brightness-110"
+                    className="max-h-12 max-w-full object-contain opacity-70 group-hover:opacity-100 transition-opacity duration-300"
                   />
                 </div>
               </div>
@@ -66,8 +66,8 @@ const TrustedBy = () => {
         </div>
         
         <div className="text-center mt-12">
-          <p className="text-gray-600 dark:text-gray-300">
-            Join <span className="font-semibold text-blue-600 dark:text-blue-400">50+</span> satisfied clients who trust ARPK
+          <p className="text-muted-foreground">
+            Join <span className="font-semibold text-primary">50+</span> satisfied clients who trust ARPK
           </p>
         </div>
       </div>
