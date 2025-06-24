@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -32,7 +33,7 @@ const Login = () => {
         title: "Login Successful",
         description: "Welcome back!",
       });
-      navigate('/dashboard');
+      navigate('/');
     }
     
     setLoading(false);
@@ -54,7 +55,7 @@ const Login = () => {
         title: "Login Successful",
         description: "Welcome back!",
       });
-      navigate('/dashboard');
+      navigate('/');
     }
     
     setLoading(false);
