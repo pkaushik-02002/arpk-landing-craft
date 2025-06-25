@@ -16,6 +16,19 @@ const Login = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
 
+  const redirectToDashboard = async (user: any) => {
+    // Get user role from custom claims
+    const tokenResult = await user.getIdTokenResult();
+    const role = tokenResult.claims.role || 'client';
+    
+    // Redirect based on role
+    if (role === 'admin') {
+      navigate('/dashboard/admin');
+    } else {
+      navigate('/dashboard/client');
+    }
+  };
+
   const handleEmailLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -33,7 +46,7 @@ const Login = () => {
         title: "Login Successful",
         description: "Welcome back!",
       });
-      navigate('/');
+      await redirectToDashboard(user);
     }
     
     setLoading(false);
@@ -55,7 +68,7 @@ const Login = () => {
         title: "Login Successful",
         description: "Welcome back!",
       });
-      navigate('/');
+      await redirectToDashboard(user);
     }
     
     setLoading(false);
