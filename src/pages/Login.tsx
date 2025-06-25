@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -15,6 +16,16 @@ const Login = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
 
+  const handleSuccessfulLogin = async (user: any) => {
+    // Get user role from custom claims
+    const idTokenResult = await user.getIdTokenResult();
+    const role = idTokenResult.claims.role as 'client' | 'admin' || 'client';
+    
+    // Redirect based on role
+    const redirectPath = role === 'admin' ? '/dashboard/admin' : '/dashboard/client';
+    navigate(redirectPath);
+  };
+
   const handleEmailLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -27,12 +38,12 @@ const Login = () => {
         description: error,
         variant: "destructive",
       });
-    } else {
+    } else if (user) {
       toast({
         title: "Login Successful",
         description: "Welcome back!",
       });
-      navigate('/dashboard');
+      await handleSuccessfulLogin(user);
     }
     
     setLoading(false);
@@ -49,12 +60,12 @@ const Login = () => {
         description: error,
         variant: "destructive",
       });
-    } else {
+    } else if (user) {
       toast({
         title: "Login Successful",
         description: "Welcome back!",
       });
-      navigate('/dashboard');
+      await handleSuccessfulLogin(user);
     }
     
     setLoading(false);
