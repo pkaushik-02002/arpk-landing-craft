@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -15,19 +14,6 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
-
-  const redirectToDashboard = async (user: any) => {
-    // Get user role from custom claims
-    const tokenResult = await user.getIdTokenResult();
-    const role = tokenResult.claims.role || 'client';
-    
-    // Redirect based on role
-    if (role === 'admin') {
-      navigate('/dashboard/admin');
-    } else {
-      navigate('/dashboard/client');
-    }
-  };
 
   const handleEmailLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -46,7 +32,7 @@ const Login = () => {
         title: "Login Successful",
         description: "Welcome back!",
       });
-      await redirectToDashboard(user);
+      navigate('/dashboard');
     }
     
     setLoading(false);
@@ -68,7 +54,7 @@ const Login = () => {
         title: "Login Successful",
         description: "Welcome back!",
       });
-      await redirectToDashboard(user);
+      navigate('/dashboard');
     }
     
     setLoading(false);

@@ -11,7 +11,6 @@ const Navbar = () => {
 
   const navItems = [
     { name: "Home", url: "#hero", icon: Home },
-    { name: "Chat", url: "/chat", icon: User },
     { name: "Services", url: "#services", icon: Briefcase },
     { name: "About", url: "#about", icon: User },
     { name: "Contact", url: "#contact", icon: Mail },
