@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -7,6 +6,8 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
 import { signUpWithEmail, signInWithGoogle } from '@/lib/auth';
+import { doc, getDoc } from 'firebase/firestore';
+import { db } from '@/lib/firebase';
 import GoogleIcon from '@/components/GoogleIcon';
 
 const Register = () => {
@@ -18,13 +19,27 @@ const Register = () => {
   const navigate = useNavigate();
 
   const handleSuccessfulRegistration = async (user: any) => {
-    // Get user role from custom claims
-    const idTokenResult = await user.getIdTokenResult();
-    const role = idTokenResult.claims.role as 'client' | 'admin' || 'client';
-    
-    // Redirect based on role
-    const redirectPath = role === 'admin' ? '/dashboard/admin' : '/dashboard/client';
-    navigate(redirectPath);
+    try {
+      // Get user role from Firestore
+      const userDocRef = doc(db, 'users', user.uid);
+      const userDoc = await getDoc(userDocRef);
+      
+      let role: 'client' | 'admin' = 'client'; // default role
+      
+      if (userDoc.exists()) {
+        const userData = userDoc.data();
+        role = userData.role || 'client';
+      }
+      
+      // Redirect based on role
+      const redirectPath = role === 'admin' ? '/dashboard/admin' : '/dashboard/client';
+      console.log('Redirecting new user with role:', role, 'to:', redirectPath);
+      navigate(redirectPath);
+    } catch (error) {
+      console.error('Error fetching user role:', error);
+      // Fallback to client dashboard if there's an error
+      navigate('/dashboard/client');
+    }
   };
 
   const handleEmailSignup = async (e: React.FormEvent) => {

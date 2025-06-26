@@ -1,7 +1,8 @@
 
 import { useState, useEffect } from 'react';
 import { User, onAuthStateChanged } from 'firebase/auth';
-import { auth } from '@/lib/auth';
+import { doc, getDoc } from 'firebase/firestore';
+import { auth, db } from '@/lib/firebase';
 
 export interface UserWithRole extends User {
   role?: 'client' | 'admin';
@@ -14,14 +15,30 @@ export const useAuth = () => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
       if (firebaseUser) {
-        // Get custom claims to determine user role
-        const idTokenResult = await firebaseUser.getIdTokenResult();
-        const role = idTokenResult.claims.role as 'client' | 'admin' || 'client';
-        
-        setUser({
-          ...firebaseUser,
-          role
-        });
+        try {
+          // Get user role from Firestore users collection
+          const userDocRef = doc(db, 'users', firebaseUser.uid);
+          const userDoc = await getDoc(userDocRef);
+          
+          let role: 'client' | 'admin' = 'client'; // default role
+          
+          if (userDoc.exists()) {
+            const userData = userDoc.data();
+            role = userData.role || 'client';
+          }
+          
+          setUser({
+            ...firebaseUser,
+            role
+          });
+        } catch (error) {
+          console.error('Error fetching user role from Firestore:', error);
+          // Fallback to default role if there's an error
+          setUser({
+            ...firebaseUser,
+            role: 'client'
+          });
+        }
       } else {
         setUser(null);
       }
