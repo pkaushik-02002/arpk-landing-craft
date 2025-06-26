@@ -11,6 +11,10 @@ import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import ClientDashboard from "./pages/ClientDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
+import ClientProjects from "./pages/ClientProjects";
+import Billing from "./pages/Billing";
+import AdminProjects from "./pages/AdminProjects";
+import Discounts from "./pages/Discounts";
 import NotFound from "./pages/NotFound";
 import ProtectedRoute from "./components/ProtectedRoute";
 
@@ -48,6 +52,38 @@ const App = () => (
               element={
                 <ProtectedRoute requiredRole="admin">
                   <AdminDashboard />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/projects" 
+              element={
+                <ProtectedRoute requiredRole="client">
+                  <ClientProjects />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/billing" 
+              element={
+                <ProtectedRoute requiredRole="client">
+                  <Billing />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/admin/projects" 
+              element={
+                <ProtectedRoute requiredRole="admin">
+                  <AdminProjects />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/admin/discounts" 
+              element={
+                <ProtectedRoute requiredRole="admin">
+                  <Discounts />
                 </ProtectedRoute>
               } 
             />
