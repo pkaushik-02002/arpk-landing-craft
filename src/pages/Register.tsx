@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -15,6 +16,16 @@ const Register = () => {
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
+
+  const handleSuccessfulRegistration = async (user: any) => {
+    // Get user role from custom claims
+    const idTokenResult = await user.getIdTokenResult();
+    const role = idTokenResult.claims.role as 'client' | 'admin' || 'client';
+    
+    // Redirect based on role
+    const redirectPath = role === 'admin' ? '/dashboard/admin' : '/dashboard/client';
+    navigate(redirectPath);
+  };
 
   const handleEmailSignup = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -37,12 +48,12 @@ const Register = () => {
         description: error,
         variant: "destructive",
       });
-    } else {
+    } else if (user) {
       toast({
         title: "Registration Successful",
         description: "Welcome to ARPK!",
       });
-      navigate('/dashboard');
+      await handleSuccessfulRegistration(user);
     }
     
     setLoading(false);
@@ -59,12 +70,12 @@ const Register = () => {
         description: error,
         variant: "destructive",
       });
-    } else {
+    } else if (user) {
       toast({
         title: "Registration Successful",
         description: "Welcome to ARPK!",
       });
-      navigate('/dashboard');
+      await handleSuccessfulRegistration(user);
     }
     
     setLoading(false);

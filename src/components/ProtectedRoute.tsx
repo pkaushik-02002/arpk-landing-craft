@@ -25,8 +25,14 @@ const ProtectedRoute = ({ children, requiredRole }: ProtectedRouteProps) => {
     return <Navigate to="/login" replace />;
   }
 
+  // If no specific role required, redirect to appropriate dashboard
+  if (!requiredRole) {
+    const redirectPath = user.role === 'admin' ? '/dashboard/admin' : '/dashboard/client';
+    return <Navigate to={redirectPath} replace />;
+  }
+
+  // If user doesn't have required role, redirect to their appropriate dashboard
   if (requiredRole && user.role !== requiredRole) {
-    // Redirect to appropriate dashboard based on user role
     const redirectPath = user.role === 'admin' ? '/dashboard/admin' : '/dashboard/client';
     return <Navigate to={redirectPath} replace />;
   }
